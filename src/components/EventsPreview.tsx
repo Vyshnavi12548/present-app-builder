@@ -2,52 +2,9 @@ import { Calendar, Clock, MapPin, Users, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { CalendarEvent } from "@/components/FileUpload";
 
-interface CalendarEvent {
-  id: string;
-  title: string;
-  date: string;
-  time: string;
-  location?: string;
-  attendees?: number;
-  description?: string;
-  confidence: number;
-}
-
-const mockEvents: CalendarEvent[] = [
-  {
-    id: "1",
-    title: "Team Meeting - Q4 Planning",
-    date: "2024-01-15",
-    time: "10:00 AM - 11:30 AM",
-    location: "Conference Room A",
-    attendees: 8,
-    description: "Quarterly planning session for Q4 objectives",
-    confidence: 95
-  },
-  {
-    id: "2", 
-    title: "Product Demo - Client Presentation",
-    date: "2024-01-18",
-    time: "2:00 PM - 3:00 PM",
-    location: "Virtual - Zoom",
-    attendees: 12,
-    description: "Showcase new features to key stakeholders",
-    confidence: 92
-  },
-  {
-    id: "3",
-    title: "Workshop - AI Implementation",
-    date: "2024-01-22",
-    time: "9:00 AM - 4:00 PM",
-    location: "Training Center B",
-    attendees: 25,
-    description: "Full-day training on AI tools and workflows",
-    confidence: 88
-  }
-];
-
-const EventsPreview = ({ events = mockEvents }: { events?: CalendarEvent[] }) => {
+const EventsPreview = ({ events = [] }: { events?: CalendarEvent[] }) => {
   const getConfidenceColor = (confidence: number) => {
     if (confidence >= 90) return "bg-green-100 text-green-800 border-green-200";
     if (confidence >= 80) return "bg-yellow-100 text-yellow-800 border-yellow-200";

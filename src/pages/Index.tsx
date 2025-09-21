@@ -1,20 +1,22 @@
 import { useState } from "react";
 import Header from "@/components/Header";
-import FileUpload from "@/components/FileUpload";
+import FileUpload, { CalendarEvent } from "@/components/FileUpload";
 import EventsPreview from "@/components/EventsPreview";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Brain, FileText, Calendar } from "lucide-react";
 
 const Index = () => {
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
+  const [extractedEvents, setExtractedEvents] = useState<CalendarEvent[]>([]);
   const [hasProcessedFiles, setHasProcessedFiles] = useState(false);
 
   const handleFilesUploaded = (files: File[]) => {
     setUploadedFiles(files);
-    // Simulate AI processing
-    setTimeout(() => {
-      setHasProcessedFiles(true);
-    }, 2000);
+  };
+
+  const handleEventsExtracted = (events: CalendarEvent[]) => {
+    setExtractedEvents(prev => [...prev, ...events]);
+    setHasProcessedFiles(true);
   };
 
   return (
@@ -59,12 +61,12 @@ const Index = () => {
             </TabsTrigger>
             <TabsTrigger value="events" className="flex items-center gap-2" disabled={!hasProcessedFiles}>
               <Calendar className="w-4 h-4" />
-              Review Events ({hasProcessedFiles ? 3 : 0})
+              Review Events ({extractedEvents.length})
             </TabsTrigger>
           </TabsList>
 
           <TabsContent value="upload" className="space-y-6">
-            <FileUpload onFilesUploaded={handleFilesUploaded} />
+            <FileUpload onFilesUploaded={handleFilesUploaded} onEventsExtracted={handleEventsExtracted} />
             
             {uploadedFiles.length > 0 && (
               <div className="text-center py-8">
@@ -77,7 +79,7 @@ const Index = () => {
           </TabsContent>
 
           <TabsContent value="events" className="space-y-6">
-            <EventsPreview />
+            <EventsPreview events={extractedEvents} />
           </TabsContent>
         </Tabs>
 
